@@ -276,7 +276,8 @@ angular.module("ngDraggable", [])
                 var _dropEnabled=false;
 
                 var onDropCallback = $parse(attrs.ngDropSuccess);// || function(){};
-
+                var onDragEnterCallback = $parse(attrs.ngDragEnter);
+                var onDragLeaveCallback = $parse(attrs.ngDragLeave);
                 var onDragStartCallback = $parse(attrs.ngDragStart);
                 var onDragStopCallback = $parse(attrs.ngDragStop);
                 var onDragMoveCallback = $parse(attrs.ngDragMove);
@@ -364,14 +365,38 @@ angular.module("ngDraggable", [])
                     return touching;
                 };
 
-                var updateDragStyles = function(touching, dragElement) {
-                    if(touching){
-                        element.addClass('drag-enter');
-                        dragElement.addClass('drag-over');
-                    }else if(_lastDropTouch == element){
-                        _lastDropTouch=null;
-                        element.removeClass('drag-enter');
-                        dragElement.removeClass('drag-over');
+                var updateDragStyles = function (touching, dragElement) {
+                    if (touching) {
+
+                        if (!element.hasClass('drag-enter')) {
+                            element.addClass('drag-enter');
+                            dragElement.addClass('drag-over');
+
+                            if (attrs.ngDragEnter) {
+                                $timeout(function () {
+                                    onDragEnterCallback(scope, {
+                                        $data: {},
+                                        $event: {element: dragElement}
+                                    });
+                                });
+                            }
+                        }
+                    } else if (_lastDropTouch == element) {
+
+                        if(element.hasClass('drag-enter')){
+                            _lastDropTouch = null;
+                            element.removeClass('drag-enter');
+                            dragElement.removeClass('drag-over');
+
+                            if (attrs.ngDragLeave) {
+                                $timeout(function () {
+                                    onDragLeaveCallback(scope, {
+                                        $data: {},
+                                        $event: {element: dragElement}
+                                    });
+                                });
+                            }
+                        }
                     }
                 };
 
