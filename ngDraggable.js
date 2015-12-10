@@ -306,7 +306,7 @@ angular.module("ngDraggable", [])
                 };
                 var onDragStart = function(evt, obj) {
                     if(! _dropEnabled)return;
-                    isTouching(obj.x,obj.y,evt,obj);
+                    isTouching(obj.x, obj.y, obj.element, evt, obj);
 
                     if (attrs.ngDragStart) {
                         $timeout(function(){
@@ -316,7 +316,7 @@ angular.module("ngDraggable", [])
                 };
                 var onDragMove = function(evt, obj) {
                     if(! _dropEnabled)return;
-                    isTouching(obj.x,obj.y,evt,obj);
+                    isTouching(obj.x, obj.y, obj.element, evt, obj);
 
                     if (attrs.ngDragMove) {
                         $timeout(function(){
@@ -333,7 +333,7 @@ angular.module("ngDraggable", [])
                         updateDragStyles(false, obj.element);
                         return;
                     }
-                    if (isTouching(obj.x, obj.y,evt,obj)) {
+                    if (isTouching(obj.x, obj.y, obj.element, evt, obj)) {
                         // call the ngDraggable ngDragSuccess element callback
                         if(obj.callback){
                             obj.callback(obj);
@@ -355,7 +355,7 @@ angular.module("ngDraggable", [])
                     updateDragStyles(false, obj.element);
                 };
 
-                var isTouching = function(mouseX, mouseY, dragElement,evt,obj) {
+                var isTouching = function(mouseX, mouseY, dragElement, evt, obj) {
                     var touching= hitTest(mouseX, mouseY);
                     scope.isTouching = touching;
                     if(touching){
