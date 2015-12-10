@@ -330,7 +330,7 @@ angular.module("ngDraggable", [])
                     // don't listen to drop events if this is the element being dragged
                     // only update the styles and return
                     if (!_dropEnabled || _myid === obj.uid) {
-                        updateDragStyles(false, obj.element);
+                        updateDragStyles(false, obj.element, evt, obj);
                         return;
                     }
                     if (isTouching(obj.x, obj.y, obj.element, evt, obj)) {
@@ -352,7 +352,7 @@ angular.module("ngDraggable", [])
                         });
                     }
 
-                    updateDragStyles(false, obj.element);
+                    updateDragStyles(false, obj.element, evt, obj);
                 };
 
                 var isTouching = function(mouseX, mouseY, dragElement, evt, obj) {
@@ -361,11 +361,11 @@ angular.module("ngDraggable", [])
                     if(touching){
                         _lastDropTouch = element;
                     }
-                    updateDragStyles(touching, dragElement,evt,obj);
+                    updateDragStyles(touching, dragElement, evt, obj);
                     return touching;
                 };
 
-                var updateDragStyles = function (touching, dragElement,evt,obj) {
+                var updateDragStyles = function (touching, dragElement, evt, obj) {
                     if (touching) {
 
                         if (!element.hasClass('drag-enter')) {
