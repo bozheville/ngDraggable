@@ -1,0 +1,23 @@
+{
+  "name": "ng-draggable",
+  "version": "1.0.0",
+  "description": "Drag and drop module for Angular JS with support for touch devices",
+  "main": "ngDraggable.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bozheville/ngDraggable.git"
+  },
+  "keywords": [
+    "angularjs",
+    "drag&drop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bozheville/ngDraggable/issues"
+  },
+  "homepage": "https://github.com/bozheville/ngDraggable#readme"
+}

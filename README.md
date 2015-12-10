@@ -32,9 +32,9 @@ Draggable usage:
 * `ng-center-anchor` is optional. If not specified, it defaults to false.
 * If the draggable is also clickable (ng-click, ng-dblclick) the script wont react.
 * You can define a drag-button as child with the attribute `ng-drag-handle`.
-
-```ng-drag-start``` and ```ng-drag-move``` is also available. Add to the ng-drop element.
-``ng-drag-stop`` can be used when you want to react to the user dragging an item and it wasn't dropped into the target container.
+* `ng-drag-enter` and `ng-drag-leave` (optional). Available for ng-drop element.
+* `ng-drag-start` and `ng-drag-move` (optional). Available for ng-drop element.
+* `ng-drag-stop` can be used when you want to react to the user dragging an item and it wasn't dropped into the target container.
 
 ```draggable:start```, ```draggable:move``` and  ```draggable:end``` events are broadcast on drag actions.
 
