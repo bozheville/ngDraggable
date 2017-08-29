@@ -4,68 +4,73 @@
  */
 angular
   .module('ngDraggable', [])
-  .factory('ngDragHitTest', function($document, $window) {
-    var sidesHitTests = {
-      top: function(bounds, mouseX, mouseY, distance) {
-        return mouseY < bounds.top + distance;
-      },
-      bottom: function(bounds, mouseX, mouseY, distance) {
-        return mouseY > bounds.bottom - distance;
-      },
-      left: function(bounds, mouseX, mouseY, distance) {
-        return mouseX < bounds.left + distance;
-      },
-      right: function(bounds, mouseX, mouseY, distance) {
-        return mouseX > bounds.right - distance;
-      }
-    };
+  .factory('ngDragHitTest', [
+    '$document',
+    '$window',
+    function($document, $window) {
+      var sidesHitTests = {
+        top: function(bounds, mouseX, mouseY, distance) {
+          return mouseY < bounds.top + distance;
+        },
+        bottom: function(bounds, mouseX, mouseY, distance) {
+          return mouseY > bounds.bottom - distance;
+        },
+        left: function(bounds, mouseX, mouseY, distance) {
+          return mouseX < bounds.left + distance;
+        },
+        right: function(bounds, mouseX, mouseY, distance) {
+          return mouseX > bounds.right - distance;
+        }
+      };
 
-    var pointBoxCollision = function(bounds, mouseX, mouseY) {
-      return (
-        mouseX >= bounds.left &&
-        mouseX <= bounds.right &&
-        mouseY <= bounds.bottom &&
-        mouseY >= bounds.top
-      );
-    };
+      var pointBoxCollision = function(bounds, mouseX, mouseY) {
+        return (
+          mouseX >= bounds.left &&
+          mouseX <= bounds.right &&
+          mouseY <= bounds.bottom &&
+          mouseY >= bounds.top
+        );
+      };
 
-    var hitTest = function(element, mouseX, mouseY, sides) {
-      var distance = distance || 0;
-      if (sides && sides.hasOwnProperty('all') && sides['all'] !== null) {
-        var distance = sides.all.distance || 10;
-        sides = {
-          left: { distance: distance },
-          right: { distance: distance },
-          bottom: { distance: distance },
-          top: { distance: distance }
-        };
-      }
+      var hitTest = function(element, mouseX, mouseY, sides) {
+        var distance = distance || 0;
+        if (sides && sides.hasOwnProperty('all') && sides['all'] !== null) {
+          var distance = sides.all.distance || 10;
+          sides = {
+            left: { distance: distance },
+            right: { distance: distance },
+            bottom: { distance: distance },
+            top: { distance: distance }
+          };
+        }
 
-      var bounds = element.getBoundingClientRect(); // ngDraggable.getPrivOffset(element);
-      mouseX -=
-        $document[0].body.scrollLeft + $document[0].documentElement.scrollLeft;
-      mouseY -=
-        $document[0].body.scrollTop + $document[0].documentElement.scrollTop;
+        var bounds = element.getBoundingClientRect(); // ngDraggable.getPrivOffset(element);
+        mouseX -=
+          $document[0].body.scrollLeft +
+          $document[0].documentElement.scrollLeft;
+        mouseY -=
+          $document[0].body.scrollTop + $document[0].documentElement.scrollTop;
 
-      var isInside = pointBoxCollision(bounds, mouseX, mouseY);
-      var result = { inside: false };
-      if (isInside) {
-        result.inside = true;
-        for (var side_key in sides) {
-          var distance = sides[side_key].distance || 10;
-          result[side_key] = sidesHitTests[side_key](
-            bounds,
-            mouseX,
-            mouseY,
-            distance
-          );
+        var isInside = pointBoxCollision(bounds, mouseX, mouseY);
+        var result = { inside: false };
+        if (isInside) {
+          result.inside = true;
+          for (var side_key in sides) {
+            var distance = sides[side_key].distance || 10;
+            result[side_key] = sidesHitTests[side_key](
+              bounds,
+              mouseX,
+              mouseY,
+              distance
+            );
+          }
+          return result;
         }
         return result;
-      }
-      return result;
-    };
-    return hitTest;
-  })
+      };
+      return hitTest;
+    }
+  ])
   .service('ngDraggable', [
     function() {
       var scope = this;
