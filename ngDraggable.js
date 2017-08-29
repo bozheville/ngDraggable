@@ -733,13 +733,23 @@ angular
         link: function(scope, element, attrs) {
           var intervalPromise = null;
           var lastMouseEvent = null;
+          var lastDragObj = null;
 
           var config = {
             verticalScroll: attrs.verticalScroll || true,
             horizontalScroll: attrs.horizontalScroll || true,
             activationDistance: attrs.activationDistance || 75,
-            scrollDistance: attrs.scrollDistance || 15
+            scrollDistance: attrs.scrollDistance || 15,
+            scrollelement: null //It's the window itself :)
           };
+
+          if (attrs.scrollElement) {
+            var foundElement = angular.element(
+              document.querySelector(attrs.scrollElement)
+            );
+            if (foundElement && foundElement.length > 0)
+              config.scrollElements = foundElement;
+          }
 
           var reqAnimFrame = (function() {
             return (
@@ -941,6 +951,7 @@ angular
             if (obj.element[0] !== element[0]) return;
 
             lastMouseEvent = obj.event;
+            lastDragObj = obj;
           });
         }
       };
